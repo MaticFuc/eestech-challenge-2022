@@ -1,5 +1,12 @@
 from typing import List
 
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+import pickle
+import os
+import numpy as np
+
 
 class LeakDetection:
     """
@@ -8,6 +15,13 @@ class LeakDetection:
 
     def __init__(self, dirname='.'):
         self.model = self.load_model(dirname)
+        self.counter = 0
+        self.count_all = 0
+        self.predict_f = False
+        self.prev = False
+        self.counter_prev = 0
+        self.batch = np.zeros((1,500))
+        self.curr_batch = np.zeros((1,50))
 
     def load_model(self, dirname):
         """
@@ -23,7 +37,9 @@ class LeakDetection:
             load(os.path.join(self.dirname, 'tree.joblib'))
 
         """
-        return None
+        with open(os.path.join(dirname, 'clf.pickle'),'rb') as f:
+            clf = pickle.load(f)
+        return clf
 
     def predict(self, features: List) -> bool:
         """
@@ -36,4 +52,33 @@ class LeakDetection:
             return self.model.predict(features) == 0
 
         """
-        return True
+        X = np.array(features[1:])
+        print(X)
+        X[X == ''] = '0.0'
+        X = X.reshape((1,len(X)))
+        if self.predict_f and self.counter_prev >= 5:
+            return True
+        elif not self.predict_f:
+            self.batch[0,5*self.counter:5*self.counter+5] = X
+            self.counter = self.counter + 1
+            if self.counter == 100:
+                self.predict_f = True
+            return self.prev
+        else:
+            
+            self.batch = self.batch.reshape((1,500))
+            self.batch = self.batch[0,5:]
+            
+            self.batch = np.append(self.batch,X.reshape((5,)),axis=0)
+            self.batch = self.batch.reshape(1,-1)
+        #print(X)
+        #print(self.model.predict(X))
+        for i in range(10):
+            self.curr_batch[0,5*i:5*i+5] = self.batch[0,50*i:50*i+5]
+        self.prev = self.model.predict(self.curr_batch)[0] == 0
+        if self.prev:
+            self.counter_prev = self.counter_prev + 1
+        else:
+            self.counter_prev = 0
+        return self.model.predict(self.curr_batch)[0] == 0
+        

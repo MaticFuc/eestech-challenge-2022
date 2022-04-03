@@ -2,6 +2,7 @@ import os
 from csv import reader
 import threading
 from typing import List
+import json
 
 from utils.utils import convert_date_to_seconds, convert_json_data_to_dataframe, evaluate, read_json
 
@@ -52,6 +53,7 @@ def run_live_prediction(file, model):
     :return: a dictionary with file name, end periods and leakages
     """
     with open(file, 'r') as f:
+        print(file)
         previous_prediction = None
         amplitude = []
         end_periods = []
@@ -114,5 +116,10 @@ def evaluate_live(csv_files, true_results_json_file, model):
 
 if __name__ == '__main__':
     from leak_detection import LeakDetection
-
-    print(evaluate_live(['data.csv'], 'solution.json', LeakDetection()))
+    #print(evaluate_live(['scenario_week_example_0.csv'], 'solution0.json', LeakDetection()))
+    fs = ["test_data\\" + f for f in os.listdir("test_data\\") if f.endswith("csv")]
+    #fs = ["test_data\\scenario_week_example_62.csv"]
+    f = generate_live_predictions(fs, LeakDetection())
+    with open("results.json", "w") as outfile:
+        json.dump(f, outfile)
+    #print(evaluate_live([,'..\\train_data\\results.json',LeakDetection()))#['data.csv'], 'solution.json', LeakDetection()))
