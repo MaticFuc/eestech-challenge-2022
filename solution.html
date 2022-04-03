@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="API Documentation" href="api.html" /><link rel="prev" title="Getting started" href="environment.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.03.04"/>
-        <title>Solution - Eestec Challenge 2022 documentation</title>
+        <title>Solution final - Eestec Challenge 2022 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=935aa2abcc5c1da4283d1dc201fb1f0add16d23a" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=25ceb02ed1c46dc30f2321ff83e92799f69dfdb9" />
@@ -156,7 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="challenge_description.html">Challenge description</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Getting started</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Solution</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Solution final</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
 </ul>
 
@@ -190,17 +190,31 @@
           </label>
         </div>
         <article role="main">
-          <section id="solution">
-<h1>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">#</a></h1>
+          <section id="solution-final">
+<h1>Solution final<a class="headerlink" href="#solution-final" title="Permalink to this headline">#</a></h1>
 <section id="phase-1">
 <h2>Phase 1<a class="headerlink" href="#phase-1" title="Permalink to this headline">#</a></h2>
-<p>You should describe your solution for Phase 1 here.</p>
+<p>In file phase1_all.py is the source code for our solution of phase 1 part.
+By running this file we get the prediction file in json format for unsupervised data.</p>
+<p>Our pipeline consists of :</p>
+<ol class="arabic simple">
+<li><p>preprocessing data by smoothing attributes</p></li>
+<li><p>we use k means clustering for detecting states and assigning the label to each data point. we also checked how clustering works by using PCA</p></li>
+</ol>
+<p><img alt="img" src="https://lh5.googleusercontent.com/_19GPD0YlDJ5O9Dc447Al4F6RaG4kgBVRsuojwRVnAriOaW7lKdPkE1v3AWikzwksR6dNIXgJrIKBlcJhUwPl6LNm8bUNJRMKAJEcGTVAz25AtKuFDE5LlFvv0z0ORvdyfLvn8rACkPU"/></p>
+<ol class="arabic simple" start="3">
+<li><p>if we only detect one state we compare with statistics of all weeks and based on that we have derived a threshold based on average pressure that we use to assign a state.</p></li>
+</ol>
+<p><img alt="img" src="https://lh3.googleusercontent.com/xCqWWWW3JGS_UuUK8bzIu7UPjVOhE3KhSzRMHN_qolAk2lO_PC1u6NFPoKttEouNO791usfBiIcNF2xeT2dcrDdkF5MRckYzST2DiXgMky8yxFkUpnn8frFSLa6ca9r4RL08kErIvpYf"/></p>
+<ol class="arabic simple" start="4">
+<li><p>in the end we generate json file with solutions</p></li>
+</ol>
+<p><img alt="img" src="https://lh5.googleusercontent.com/PkBq1Qf4ImggnH6BJTYfWMcVPz7c8a1WTTC3l5Cgd8lwxL0nRrtOwpHAyOzCBdT0USjBsK_VfGYeC7fWkpfPbHrEvPrpVcJNz0RnGcJfP2xrYB_mTvU3JoEsjH5t48vZeEU_-9e6ViGu"/></p>
 </section>
 <section id="phase-2">
 <h2>Phase 2<a class="headerlink" href="#phase-2" title="Permalink to this headline">#</a></h2>
-<p>You should describe your solution for Phase 2 here.</p>
-<p>Example how to add images:
-<img alt="simple graph" src="_images/simple_graph.PNG"/></p>
+<p>In phase two we concatenate the data for the past 10 data points and train the classifier on a subsample of all data (cca 10 percent). As the classifier we used the Logistic regression, the Dummy classifier and the Random forest classification. For the first ten predictions we always predict False as we do not have enough data to make predictions. We got the best results with the Dummy classifier.</p>
+<p><img alt="img" src="https://lh5.googleusercontent.com/4xpuzU6dUPwMW0sUAER3LblyndhSogL5SOie0w5oHdID2-vrrBHNXWTVyZtcU_EDSCD5WCjSqys6cDhfxB1CxSlXrEAHM4ZzQSMrJ4F4Ofb9fiHk0Ynf2p8FgxiulUDTfnUzrtVCQSp4"/></p>
 </section>
 </section>
 
@@ -261,7 +275,7 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Solution</a><ul>
+<li><a class="reference internal" href="#">Solution final</a><ul>
 <li><a class="reference internal" href="#phase-1">Phase 1</a></li>
 <li><a class="reference internal" href="#phase-2">Phase 2</a></li>
 </ul>
